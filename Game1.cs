@@ -53,9 +53,22 @@ public class Game1 : Game
             Exit();
 
         // TODO: Add your update logic here
-        paddle.Update(gameTime);
-        paddle2.Update(gameTime);
-        ball.Update(gameTime, paddle, paddle2);
+        if (!Globals.game_ended)
+        {
+            paddle.Update(gameTime);
+            paddle2.Update(gameTime);
+            ball.Update(gameTime, paddle, paddle2);
+        }
+        else {
+            KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.Enter)) {
+                Globals.player1_score = 0;
+                Globals.player1_score = 0;
+                Globals.game_ended = false;
+            }
+
+        }
+
 
         base.Update(gameTime);
     }
@@ -77,9 +90,11 @@ public class Game1 : Game
         else
         {
             string gameOverText = "Game Over";
+            string enterText = "Press Enter to Restart!";
             string winnerText;
 
-            if(Globals.player1_score > Globals.player2_score) {
+            if(Globals.player1_score > Globals.player2_score) 
+            {
                 winnerText = "Player 1 Wins!";
             }
             else
@@ -90,17 +105,18 @@ public class Game1 : Game
             // Measure the size of the text
             Vector2 gameOverTextSize = _font.MeasureString(gameOverText);
             Vector2 winnerTextSize = _font.MeasureString(winnerText);
+            Vector2 enterTextSize = _font.MeasureString(enterText);
 
             // Calculate the position to center the text
-            Vector2 gameOverTextPosition = new((Globals.WIDTH - gameOverTextSize.X) / 2, (Globals.HEIGHT - gameOverTextSize.Y) / 2 - 20);
-            Vector2 winnerTextPosition = new((Globals.WIDTH - winnerTextSize.X) / 2, (Globals.HEIGHT - winnerTextSize.Y) / 2 + 20);
+            Vector2 gameOverTextPosition = new((Globals.WIDTH - gameOverTextSize.X) / 2, (Globals.HEIGHT - gameOverTextSize.Y) / 2 - 40);
+            Vector2 winnerTextPosition = new((Globals.WIDTH - winnerTextSize.X) / 2, (Globals.HEIGHT - winnerTextSize.Y) / 2);
+            Vector2 enterTextPosition = new((Globals.WIDTH - enterTextSize.X) / 2, (Globals.HEIGHT + enterTextSize.Y) / 2 + 40);
 
             Globals.spriteBatch.DrawString(_font, gameOverText, gameOverTextPosition, Color.White);
             Globals.spriteBatch.DrawString(_font, winnerText, winnerTextPosition, Color.White);
+            Globals.spriteBatch.DrawString(_font, enterText, enterTextPosition, Color.White);
 
         }
-
-        
 
         Globals.spriteBatch.End();
 
